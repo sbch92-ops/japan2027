@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Japan 2027: pick, vote, plan</title>
+<meta name="description" content="12-day Tokyo → Kyoto → Osaka trip planner with group voting.">
+<style>
+:root{--bg:#fff;--paper:#f6f7f9;--ink:#15171a;--ink2:#545b66;--ink3:#8a919c;--line:#e2e5ea;--acc:#2563eb;--accbg:#e8f0fe;--good:#15803d;--bad:#b91c1c;--warnbg:#fff7e6;--warnln:#f0c36d}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--paper:#171a20;--ink:#eef0f3;--ink2:#a8b0bb;--ink3:#7b8490;--line:#2a2f37;--acc:#7aa7ff;--accbg:#1b2a47;--good:#4ade80;--bad:#f87171;--warnbg:#2b2416;--warnln:#7a5b1c}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:16px 16px 80px}
+h1{font-size:28px;line-height:1.2;margin:8px 0 6px}h2{font-size:21px;margin:0 0 10px}h3{font-size:16px;margin:0 0 8px}
+.sum{color:var(--ink2);margin:0 0 12px}
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}nav.toc a{font-size:14px;color:var(--acc);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+section{border-top:1px solid var(--line);padding:22px 0 6px}
+.muted,.cap{color:var(--ink3);font-size:14px}.cap{margin:-4px 0 10px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.tab,.btn{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer}
+.tab.sel{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin:8px 0}
+.ctl label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink2);flex:1 1 220px}
+input,textarea{font:inherit;font-size:16px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);width:100%}
+textarea{min-height:64px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--bg);cursor:pointer;display:flex;flex-direction:column;-webkit-tap-highlight-color:transparent;user-select:none}
+.card.on{border:2px solid var(--acc);background:var(--accbg)}
+.card img{width:100%;height:140px;object-fit:cover;display:block;background:var(--paper)}
+.cb{padding:12px;display:flex;flex-direction:column;gap:5px}
+.ch{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:flex-start}
+.cn{font-weight:600}.ok{font-size:12px;color:var(--ink3);white-space:nowrap}.card.on .ok{color:var(--acc);font-weight:700}
+.cm{font-size:13px;color:var(--ink2)}.cd{font-size:14px}
+.cf{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13px;color:var(--ink2);margin-top:2px}
+.map{color:var(--acc)}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--ink2);font-weight:600}
+.tw{overflow-x:auto}
+.day{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:10px 0}
+.row{display:grid;grid-template-columns:70px 1fr auto;gap:10px;padding:6px 0;border-top:1px solid var(--line)}.row:first-of-type{border-top:0}
+.lead{font-size:13px;color:var(--ink3)}.rt{font-weight:600}.rd{font-size:14px;color:var(--ink2)}.rm{font-size:12px;color:var(--ink3);white-space:nowrap}
+.warn{background:var(--warnbg);border:1px solid var(--warnln);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:14px}.warn ul{margin:6px 0 0;padding-left:18px}
+.note{background:var(--paper);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:14px}
+.good{color:var(--good);font-weight:600}.bad{color:var(--bad);font-weight:600}
+dl{display:grid;grid-template-columns:150px 1fr;gap:8px 14px;font-size:14px}dt{color:var(--ink2)}dd{margin:0}
+@media (max-width:560px){h1{font-size:24px}dl{grid-template-columns:1fr}.row{grid-template-columns:58px 1fr}.rm{grid-column:2}}
+ol.steps{padding-left:20px}ol.steps li{margin:4px 0}
+footer{color:var(--ink3);font-size:13px;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Japan 2027: pick, vote, plan</h1>
+<p class="sum">12 days for 2, KL into Tokyo on or after 20 May 2027, south to Kyoto, home from Osaka (KIX). Tap what you like, submit your votes, then generate a day-by-day plan with one locked Universal Studios day.</p>
+<nav class="toc"><a href="#votes">Your votes</a><a href="#attr">Attractions</a><a href="#food">Food</a><a href="#views">Viewpoints</a><a href="#skel">12-day skeleton</a><a href="#gen">Generate itinerary</a><a href="#vip">USJ VIP</a><a href="#fly">Flights</a><a href="#src">Sources</a></nav>
+
+<section id="votes">
+<h2>Your votes</h2>
+<ol class="steps"><li>Type your name.</li><li>Tap cards below to mark them OK (tap again to un-pick).</li><li>Tap <b>Submit votes</b>. Everyone sees the shared tally; resubmitting replaces your own votes.</li><li>Anyone can tap <b>Generate itinerary</b> using the most-voted items.</li></ol>
+<div id="status" class="note"></div>
+<div class="ctl">
+<label>Your name<input id="name" placeholder="e.g. Simon" autocomplete="nickname"></label>
+<button id="submit" class="btn pri">Submit votes</button>
+<span id="pickcount" class="muted"></span>
+<button id="clear" class="btn">Clear my picks</button>
+<button id="rmmine" class="btn">Remove my shared votes</button>
+</div>
+<div id="msg" class="muted" aria-live="polite"></div>
+<div id="voters" class="muted"></div>
+<details style="margin-top:10px"><summary class="muted">Fallback: vote codes (if the shared board is down)</summary>
+<div class="ctl"><label>Your vote code<input id="code" readonly></label><button id="copy" class="btn">Copy my votes</button></div>
+<div class="ctl"><label>Import votes (paste one or more JP27 codes)<textarea id="import" placeholder="JP27.Name.t01-k02-..."></textarea></label><button id="doimport" class="btn">Import votes</button><button id="rmimp" class="btn">Remove imported</button></div>
+</details>
+</section>
+
+<section id="attr"><h2>Attractions</h2><p class="cap">Rough time needed per item. Day trips are optional.</p><div class="tabs" id="tabs-a"></div><div class="grid" id="grid-a"></div></section>
+<section id="food"><h2>Food</h2><p class="cap">Price per person: ¥ under ¥1,500 · ¥¥ to ¥4,000 · ¥¥¥ to ¥10,000 · ¥¥¥¥+ above. Photos show the dish style (Wikimedia Commons).</p><div class="tabs" id="tabs-f"></div><div class="grid" id="grid-f"></div></section>
+<section id="views"><h2>Observation decks &amp; viewpoints</h2><p class="cap">Last published adult prices; many are dynamic, check before going. The generator puts these in evening slots.</p><div class="tabs" id="tabs-v"></div><div class="grid" id="grid-v"></div></section>
+
+<section id="skel"><h2>Default 12-day skeleton</h2><p class="cap">Dates assume leaving KL on Thu 20 May 2027.</p>
+<div class="tw"><table><thead><tr><th>Day</th><th>Date</th><th>Plan</th><th>Base</th></tr></thead><tbody>
+<tr><td>1</td><td>Thu 20 May</td><td>Fly KUL → Tokyo, check in</td><td>Tokyo</td></tr>
+<tr><td>2</td><td>Fri 21 May</td><td>Tokyo</td><td>Tokyo</td></tr>
+<tr><td>3</td><td>Sat 22 May</td><td>Tokyo</td><td>Tokyo</td></tr>
+<tr><td>4</td><td>Sun 23 May</td><td>Tokyo</td><td>Tokyo</td></tr>
+<tr><td>5</td><td>Mon 24 May</td><td>Tokyo (Disney day option)</td><td>Tokyo</td></tr>
+<tr><td>6</td><td>Tue 25 May</td><td>Day-trip slot: Hakone / Fuji / Nikko / Kamakura, or extra Tokyo day</td><td>Tokyo</td></tr>
+<tr><td>7</td><td>Wed 26 May</td><td>Shinkansen Tokyo → Kyoto (~2h15), Kyoto afternoon</td><td>Kyoto</td></tr>
+<tr><td>8</td><td>Thu 27 May</td><td>Kyoto</td><td>Kyoto</td></tr>
+<tr><td>9</td><td>Fri 28 May</td><td>Kyoto</td><td>Kyoto</td></tr>
+<tr><td>10</td><td>Sat 29 May</td><td>Kyoto → Osaka (stop at Nara or Himeji if picked)</td><td>Osaka</td></tr>
+<tr><td>11</td><td>Sun 30 May</td><td>Universal Studios Japan (locked)</td><td>Osaka (USJ)</td></tr>
+<tr><td>12</td><td>Mon 31 May</td><td>Osaka morning, fly home from KIX</td><td>Osaka</td></tr>
+</tbody></table></div>
+<p class="muted">Day 11 lands on a Sunday, when VIP tours sell out first. Consider swapping it with Day 10 or shifting dates so USJ falls on a weekday.</p>
+</section>
+
+<section id="gen"><h2>Generate itinerary</h2>
+<div class="ctl" style="align-items:center"><span>Min votes</span><div class="tabs" id="mins" style="margin:0"></div><button id="gen" class="btn pri">Generate itinerary</button></div>
+<p class="muted">Uses only items with at least the chosen number of votes. Most-voted go in first; ties go to the more famous item. Each city keeps its days (Tokyo 1–6, Kyoto 7–9, Osaka 10–12), about 2–4 items a day grouped by area, food in lunch/dinner slots near your picks, viewpoints in the evening, and exactly one USJ day.</p>
+<div id="plan"></div>
+</section>
+
+<section id="vip"><h2>USJ VIP Experience</h2>
+<p class="cap">Official ticket store prices seen 12 Nov 2026; ¥100 = RM2.58 (Oct 2026). Prices change by date; May 2027 prices are not out yet.</p>
+<div class="tw"><table><thead><tr><th>Option</th><th>Price</th><th>For your 2</th></tr></thead><tbody>
+<tr><td>Group tour, 3h (English guide, Super Nintendo World)</td><td>from ¥32,000 (RM826) pp</td><td>from ¥64,000 (RM1,651)</td></tr>
+<tr><td>Group tour range seen in earlier research</td><td>¥29,000–47,000 pp</td><td>RM1,496–2,425</td></tr>
+<tr><td>Private 5h + lunch or dinner (Japanese guide)</td><td>from ¥298,000 (RM7,688) per group</td><td>Priced for 4; ≈ RM3,844 pp for 2</td></tr>
+<tr><td>Private 5h, English guide</td><td>from ¥398,000 (RM10,268) per group</td><td>≈ RM5,134 pp for 2</td></tr>
+<tr><td>Private 8h + lunch and dinner</td><td>from ¥393,800 (RM10,160) per group</td><td>≈ RM5,080 pp for 2</td></tr>
+<tr><td>Ultimate Luxury Plan (one party a day)</td><td>from ¥949,800 (RM24,505) per group</td><td>Winter version 25 Nov 2026–11 Jan 2027 only</td></tr>
+</tbody></table></div>
+<dl style="margin-top:14px">
+<dt>Group tour includes</dt><dd>Guide for ~3h, special entrance, lounge with a drink, guided rides in Super Nintendo World (Mario Kart, Mine-Cart Madness, Yoshi's Adventure) plus JAWS, 4 Express rides of your choice, 10% off meals, certificate and poncho.</dd>
+<dt>Private tour includes</dt><dd>Your own guide and custom plan, VIP entrance and lounge, priority on rides incl. Super Nintendo World, shows, meal(s) at a tour-only restaurant, luggage storage, one free parking space.</dd>
+<dt>Party size</dt><dd>Group tour: per person, up to ~10 strangers per group. Private: priced as a party of 4 even if you are 2; up to 10 people, extra guests from ~¥62,000 each.</dd>
+<dt>Ages</dt><dd>Children 3 and under free; under-12s must be with someone 13 or older; normal ride height and age limits apply, with no swaps.</dd>
+<dt>Park ticket</dt><dd>Not included. Buy a Studio Pass (¥8,600–11,000 pp, RM222–284) for the same date.</dd>
+<dt>How to book</dt><dd>Official USJ online ticket store (usjticketing.com) or resellers like KKday/Klook. English-guide tours need booking at least 1 month ahead. No changes or refunds once bought. Weekend and holiday slots sell out first.</dd>
+</dl>
+<h3 style="margin-top:16px">Express Pass</h3>
+<div class="tw"><table><thead><tr><th>Pass</th><th>Price pp</th><th>Notes</th></tr></thead><tbody>
+<tr><td>Express Pass 4</td><td>from ¥11,800 (RM304)</td><td>4 rides skip the line, usually incl. Nintendo World timed entry</td></tr>
+<tr><td>Express Pass 7</td><td>from ¥14,800 (RM382)</td><td>7 rides; best value for a full day</td></tr>
+<tr><td>Express Pass Premium</td><td>¥41,000–44,000 (RM1,058–1,135)</td><td>Most rides once each</td></tr>
+</tbody></table></div>
+</section>
+
+<section id="fly"><h2>Flights</h2><p class="cap">Cheapest fares for 2 people found in an earlier search on 12 Nov 2026. They will change.</p>
+<div class="tw"><table><thead><tr><th>Option</th><th>Out</th><th>Back</th><th>Total for 2</th></tr></thead><tbody>
+<tr><td>Philippine Airlines via Manila</td><td>Thu 20 May</td><td>Sun 30 May (KIX)</td><td>US$962</td></tr>
+<tr><td>ANA nonstop KUL → HND</td><td>Sat 22 May</td><td>Wed 2 Jun via Haneda</td><td>US$1,305</td></tr>
+</tbody></table></div>
+<p class="muted">The cheapest fare returns on 30 May, a day before this 12-day plan ends.</p>
+</section>
+
+<section id="src"><h2>Sources</h2><ul>
+<li><a href="https://www.usj.co.jp/web/en/us/tickets/lineup/vip-experience" target="_blank" rel="noopener">Universal VIP Experience (usj.co.jp)</a></li>
+<li><a href="https://www.usjticketing.com/extras" target="_blank" rel="noopener">USJ online ticket store – extras and VIP</a></li>
+<li><a href="https://www.kkday.com/en/blog/59381/universal-studios-japan-vip-experience-guide" target="_blank" rel="noopener">KKday USJ VIP Tour 2026–2027 guide</a></li>
+<li><a href="https://letsgomum.com.au/universal-studios-japan-vip-pass-17082025/" target="_blank" rel="noopener">Let's go Mum USJ VIP guide</a></li>
+<li>Photos: <a href="https://commons.wikimedia.org" target="_blank" rel="noopener">Wikimedia Commons</a> (CC-licensed; dish photos are illustrative, not of the named restaurant)</li>
+</ul></section>
+<footer>Personal trip planner. Votes are stored in a public JSON blob anyone with this link can read or edit; don't put private info in names.</footer>
+</div>
+<script>
+const W = "https://upload.wikimedia.org/wikipedia/commons/thumb/";
+const IMG = {
+  sushi: "6/60/Sushi_platter.jpg/960px-Sushi_platter.jpg",
+  ramen: "c/c3/Shoyu_Ramen%EF%BC%88Tokyo_Ramen%EF%BC%89_-_01.jpg/960px-Shoyu_Ramen%EF%BC%88Tokyo_Ramen%EF%BC%89_-_01.jpg",
+  tsukemen: "5/56/Tsukemen_at_a_Tokyo_restaurant.jpg/960px-Tsukemen_at_a_Tokyo_restaurant.jpg",
+  monja: "7/77/Monjayaki_Before.JPG/960px-Monjayaki_Before.JPG",
+  tempura: "2/2e/Tempura_01.jpg/960px-Tempura_01.jpg",
+  sukiyaki: "3/32/Sukiyaki_01.jpg/960px-Sukiyaki_01.jpg",
+  wagyu: "c/c1/Tajimagyu2.jpg/960px-Tajimagyu2.jpg",
+  tonkatsu: "9/93/%22Amai-Yuwaku%22_Special_Loin_Pork_Cutlet1.jpg/960px-%22Amai-Yuwaku%22_Special_Loin_Pork_Cutlet1.jpg",
+  yakitori: "4/4b/Cooking_yakitori.jpg/960px-Cooking_yakitori.jpg",
+  unagi: "5/5e/%E5%B0%8F%E5%B7%9D%E8%8F%8A%E9%B0%BB%E9%AD%9A%E9%A3%AF_%2849287165332%29.jpg/960px-%E5%B0%8F%E5%B7%9D%E8%8F%8A%E9%B0%BB%E9%AD%9A%E9%A3%AF_%2849287165332%29.jpg",
+  soba: "9/9a/Dried_soba_noodles_by_FotoosVanRobin.jpg/960px-Dried_soba_noodles_by_FotoosVanRobin.jpg",
+  kaiseki: "6/69/Jisaku_Kaiseki_Ryori_01.jpg/960px-Jisaku_Kaiseki_Ryori_01.jpg",
+  tofu: "0/03/Japanese_SilkyTofu_%28Kinugoshi_Tofu%29.JPG/960px-Japanese_SilkyTofu_%28Kinugoshi_Tofu%29.JPG",
+  matcha: "d/d9/Matcha_Scoop.jpg/960px-Matcha_Scoop.jpg",
+  wagashi: "d/d4/Wagashi_closeup_14.jpg/960px-Wagashi_closeup_14.jpg",
+  takoyaki: "5/5c/%E3%82%BD%E3%83%BC%E3%82%B9%E3%81%A8%E3%83%9D%E3%83%B3%E9%85%A2%E3%81%AE%E3%81%9F%E3%81%93%E7%84%BC%E3%81%8D.jpg/960px-%E3%82%BD%E3%83%BC%E3%82%B9%E3%81%A8%E3%83%9D%E3%83%B3%E9%85%A2%E3%81%AE%E3%81%9F%E3%81%93%E7%84%BC%E3%81%8D.jpg",
+  okonomi: "5/59/Okonomiyaki_001.jpg/960px-Okonomiyaki_001.jpg",
+  kushi: "f/f4/KushikatsuDaruma01.jpg/960px-KushikatsuDaruma01.jpg",
+  udon: "9/94/%E9%B6%8F%E5%A4%A9%E3%81%AE%E3%81%86%E3%81%A9%E3%82%93.jpg/960px-%E9%B6%8F%E5%A4%A9%E3%81%AE%E3%81%86%E3%81%A9%E3%82%93.jpg",
+  hoto: "a/a0/Houtou.jpg/960px-Houtou.jpg",
+  nakatanido: "e/ee/Sanjodori_Nakatanido.jpg/960px-Sanjodori_Nakatanido.jpg",
+  dotonbori: "f/f4/Osaka_Dotonbori_Ebisu_Bridge.jpg/960px-Osaka_Dotonbori_Ebisu_Bridge.jpg",
+  skytree: "8/84/Tokyo_Skytree_2014_%E2%85%A2.jpg/960px-Tokyo_Skytree_2014_%E2%85%A2.jpg",
+  tower: "5/58/Tokyo_Tower_2023.jpg/960px-Tokyo_Tower_2023.jpg",
+  shibuya: "4/45/SHIBUYA_SCRAMBLE_SQUARE_East_Tower.jpg/960px-SHIBUYA_SCRAMBLE_SQUARE_East_Tower.jpg",
+  cityview: "9/95/Tokyo_Tower_%28Roppongi_Hills_Mori_Tower_-_TOKYO_CITY_VIEW%29.jpg/960px-Tokyo_Tower_%28Roppongi_Hills_Mori_Tower_-_TOKYO_CITY_VIEW%29.jpg",
+  tmg: "9/96/Tokyo_Metropolitan_Government_Building_2024.jpg/960px-Tokyo_Metropolitan_Government_Building_2024.jpg",
+  sunshine: "2/2f/Sunshine_60.JPG/960px-Sunshine_60.JPG",
+  kyototower: "a/a8/Kyoto_Tower_%28%E4%BA%AC%E9%83%BD%E3%82%BF%E3%83%AF%E3%83%BC%2C_Ky%C5%8Dto-taw%C4%81_by_Don_Ramey_Logan.jpg/960px-Kyoto_Tower_%28%E4%BA%AC%E9%83%BD%E3%82%BF%E3%83%AF%E3%83%BC%2C_Ky%C5%8Dto-taw%C4%81_by_Don_Ramey_Logan.jpg",
+  kiyomizu: "8/83/Kiyomizu-dera%2C_Kyoto%2C_November_2016_-01.jpg/960px-Kiyomizu-dera%2C_Kyoto%2C_November_2016_-01.jpg",
+  yotsutsuji: "9/98/View_on_Fushimi_on_Fushimi_Inari-taisha.jpg/960px-View_on_Fushimi_on_Fushimi_Inari-taisha.jpg",
+  shogunzuka: "e/eb/%E5%B0%86%E8%BB%8D%E5%A1%9A.JPG/960px-%E5%B0%86%E8%BB%8D%E5%A1%9A.JPG",
+  harukas: "a/a5/%E3%81%82%E3%81%B9%E3%81%AE%E3%83%8F%E3%83%AB%E3%82%AB%E3%82%B9.jpg/960px-%E3%81%82%E3%81%B9%E3%81%AE%E3%83%8F%E3%83%AB%E3%82%AB%E3%82%B9.jpg",
+  umeda: "f/f9/2018_Umeda_Sky_Building.jpg/960px-2018_Umeda_Sky_Building.jpg",
+  tsutenkaku: "d/d2/New_Tsutenkaku%2C_Osaka.jpg/960px-New_Tsutenkaku%2C_Osaka.jpg",
+  hep: "a/ad/HEP_in_201409.JPG/960px-HEP_in_201409.JPG",
+};
+function a(id, city, name, area, hours, desc, trip) { return { id, kind: "a", city, name, area, hours, desc, trip: !!trip }; }
+function f(id, city, name, area, dish, price, desc, img, meal) { return { id, kind: "f", city, name, area, hours: 1, desc, dish, price, img, meal: meal || "any" }; }
+function v(id, city, name, area, desc, best, price, book, img) { return { id, kind: "v", city, name, area, hours: 1.5, desc, best, price, book, img }; }
+const ITEMS = [
+  // Tokyo attractions
+  a("t01", "Tokyo", "Senso-ji & Nakamise-dori", "Asakusa", 2, "Tokyo's oldest temple, Kaminarimon gate and a snack-lined approach street."),
+  a("t02", "Tokyo", "Sumida River cruise", "Asakusa", 1, "Water bus from Asakusa down to Hamarikyu or Odaiba."),
+  a("t03", "Tokyo", "Ryogoku sumo & Kokugikan", "Asakusa", 3, "May Grand Sumo tournament usually runs about 9–23 May; the last days may overlap. Verify 2027 dates."),
+  a("t04", "Tokyo", "Ueno Park & Tokyo National Museum", "Ueno", 3, "Leafy park with Japan's biggest museum of art and samurai treasures."),
+  a("t05", "Tokyo", "Ameyoko market", "Ueno", 1, "Bustling street market under the train tracks, cheap snacks and goods."),
+  a("t06", "Tokyo", "Yanaka Ginza old town", "Ueno", 1.5, "Old-Tokyo shopping lane with temples, cats and croquettes."),
+  a("t07", "Tokyo", "Shibuya Crossing & Hachiko", "Shibuya", 1, "The world's busiest scramble crossing and the loyal-dog statue."),
+  a("t08", "Tokyo", "Meiji Jingu Shrine", "Harajuku", 1.5, "Forest shrine to Emperor Meiji, calm and green in May."),
+  a("t09", "Tokyo", "Takeshita Street", "Harajuku", 1, "Youth fashion, crepes and kawaii culture."),
+  a("t10", "Tokyo", "Omotesando", "Harajuku", 1.5, "Tree-lined boulevard of designer architecture and cafes."),
+  a("t11", "Tokyo", "Shinjuku Gyoen", "Shinjuku", 2, "Huge garden mixing Japanese, French and English styles."),
+  a("t12", "Tokyo", "Omoide Yokocho & Golden Gai", "Shinjuku", 1.5, "Tiny lantern-lit alleys of yakitori stalls and bars; best at night."),
+  a("t13", "Tokyo", "Kabukicho & Godzilla Head", "Shinjuku", 1, "Neon nightlife district with the Godzilla statue on Hotel Gracery."),
+  a("t14", "Tokyo", "Imperial Palace East Gardens", "Marunouchi", 1.5, "Former Edo Castle grounds with moats and stone walls; free."),
+  a("t15", "Tokyo", "Tokyo Station & Marunouchi", "Marunouchi", 1, "Restored red-brick station, Character Street and Ramen Street."),
+  a("t16", "Tokyo", "Ginza", "Ginza", 2, "Flagship stores, department-store food halls, Itoya stationery."),
+  a("t17", "Tokyo", "Kabuki-za Theatre", "Ginza", 1.5, "Single-act kabuki tickets (makumi-seki) let you try one act."),
+  a("t18", "Tokyo", "Tsukiji Outer Market", "Ginza", 1.5, "Street food, tamagoyaki and fresh seafood stalls; go before noon."),
+  a("t19", "Tokyo", "Hamarikyu Gardens", "Ginza", 1.5, "Bayside garden with a teahouse on a tidal pond."),
+  a("t20", "Tokyo", "Toyosu Market tuna viewing", "Toyosu", 1.5, "Tokyo's fish market; early-morning tuna auction viewing deck."),
+  a("t21", "Tokyo", "teamLab Planets", "Toyosu", 2, "Walk-through digital art, partly barefoot in water. Book ahead."),
+  a("t22", "Tokyo", "teamLab Borderless", "Roppongi", 2.5, "Immersive digital art museum at Azabudai Hills. Book ahead."),
+  a("t23", "Tokyo", "Odaiba (Gundam, Rainbow Bridge)", "Odaiba", 3, "Bayfront island with the life-size Unicorn Gundam and night views."),
+  a("t24", "Tokyo", "Akihabara Electric Town", "Akihabara", 2, "Anime, games, retro arcades and electronics."),
+  a("t25", "Tokyo", "Ikebukuro Sunshine City & Pokémon Center", "Ikebukuro", 2, "Mall with the Pokémon Center Mega Tokyo and aquarium."),
+  a("t26", "Tokyo", "Ghibli Museum", "West Tokyo", 2, "Studio Ghibli's whimsical museum in Mitaka. Tickets sell out monthly."),
+  a("t27", "Tokyo", "Harry Potter Studio Tour Tokyo", "West Tokyo", 4, "Sets, props and Hogwarts Express in Nerima. Timed tickets."),
+  a("t28", "Tokyo", "Shimokitazawa", "West Tokyo", 2, "Vintage shops, indie cafes and live houses."),
+  a("t29", "Tokyo", "Gotoku-ji lucky cat temple", "West Tokyo", 1, "Temple filled with thousands of maneki-neko figures."),
+  a("t30", "Tokyo", "Nakameguro canal", "Shibuya", 1.5, "Canal-side boutiques and cafes, leafy in May."),
+  a("t31", "Tokyo", "Tokyo Disneyland", "Maihama", 9, "Classic Disney park with Cinderella Castle; a full day."),
+  a("t32", "Tokyo", "Tokyo DisneySea", "Maihama", 9, "Unique sea-themed park, incl. Fantasy Springs; a full day."),
+  // Day trips
+  a("d01", "Hakone", "Hakone loop (ropeway, Owakudani, Lake Ashi)", "Hakone", 10, "Optional day trip: volcanic valley, pirate-ship cruise, Fuji views if clear.", true),
+  a("d02", "Fuji", "Mt Fuji – Kawaguchiko & Chureito Pagoda", "Kawaguchiko", 10, "Optional day trip: classic Fuji views from the lake and pagoda.", true),
+  a("d03", "Nikko", "Nikko Toshogu & Kegon Falls", "Nikko", 10, "Optional day trip: ornate shrines and waterfalls; spring festival ~17–18 May.", true),
+  a("d04", "Kamakura", "Kamakura & Enoshima", "Kamakura", 8, "Optional day trip: Great Buddha, temples and the coast.", true),
+  a("d05", "Nara", "Nara Park, Todai-ji & deer", "Nara", 5, "Optional stop between Kyoto and Osaka: giant Buddha and bowing deer.", true),
+  a("d06", "Himeji", "Himeji Castle", "Himeji", 5, "Optional stop: Japan's finest original castle, ~45 min from Kyoto by Shinkansen.", true),
+  // Kyoto attractions
+  a("k01", "Kyoto", "Fushimi Inari Taisha", "Fushimi", 2.5, "Thousands of vermilion torii gates up Mt Inari; go early."),
+  a("k02", "Kyoto", "Kiyomizu-dera & Sannenzaka", "Higashiyama", 2, "Hillside temple with a wooden stage, and old slope streets below."),
+  a("k03", "Kyoto", "Gion & Hanamikoji", "Gion", 1.5, "Geisha district of teahouses; best at dusk."),
+  a("k04", "Kyoto", "Yasaka Shrine & Maruyama Park", "Gion", 1, "Lantern-hung shrine at the top of Gion."),
+  a("k05", "Kyoto", "Kinkaku-ji (Golden Pavilion)", "Kitayama", 1, "Gold-leafed pavilion over a mirror pond."),
+  a("k06", "Kyoto", "Ryoan-ji rock garden", "Kitayama", 1, "Famous Zen dry garden of 15 stones."),
+  a("k07", "Kyoto", "Arashiyama Bamboo Grove", "Arashiyama", 1, "Towering bamboo path; arrive before 8am."),
+  a("k08", "Kyoto", "Tenryu-ji", "Arashiyama", 1, "World Heritage Zen temple with a pond garden."),
+  a("k09", "Kyoto", "Iwatayama Monkey Park", "Arashiyama", 1, "Hilltop macaques and city views."),
+  a("k10", "Kyoto", "Sagano Romantic Train / Hozugawa boat", "Arashiyama", 2.5, "Scenic river-gorge train and boat ride, green in May."),
+  a("k11", "Kyoto", "Ginkaku-ji & Philosopher's Path", "N. Higashiyama", 2, "Silver Pavilion and a canal-side walk."),
+  a("k12", "Kyoto", "Nanzen-ji & aqueduct", "N. Higashiyama", 1, "Big Zen complex with a brick Meiji aqueduct."),
+  a("k13", "Kyoto", "Heian Shrine", "N. Higashiyama", 1, "Giant torii and a garden of irises in late May."),
+  a("k14", "Kyoto", "Nijo Castle", "Central", 1.5, "Shogun's palace with 'nightingale' squeaky floors."),
+  a("k15", "Kyoto", "Nishiki Market", "Central", 1.5, "'Kyoto's kitchen', a covered lane of tasting stalls."),
+  a("k16", "Kyoto", "Pontocho alley", "Central", 1, "Narrow lantern-lit alley; riverside kawayuka decks open in May."),
+  a("k17", "Kyoto", "Sanjusangen-do", "Fushimi", 1, "Hall of 1,001 golden Kannon statues."),
+  a("k18", "Kyoto", "Tofuku-ji", "Fushimi", 1, "Zen temple with a famous wooden bridge over a maple valley."),
+  a("k19", "Kyoto", "Uji – Byodo-in & matcha", "Uji", 3.5, "Phoenix Hall from the ¥10 coin and Japan's matcha town."),
+  // Osaka attractions
+  a("o01", "Osaka", "Dotonbori & Glico sign", "Namba", 2, "Neon canal-side food street; best at night."),
+  a("o02", "Osaka", "Kuromon Market", "Namba", 1, "Seafood and wagyu skewers market."),
+  a("o03", "Osaka", "Shinsaibashi-suji & Amerikamura", "Namba", 1.5, "Covered shopping arcade and youth street fashion."),
+  a("o04", "Osaka", "Tombori river cruise", "Namba", 0.5, "20-minute boat ride under Dotonbori's neon."),
+  a("o05", "Osaka", "Den Den Town", "Namba", 1, "Osaka's anime and electronics district."),
+  a("o06", "Osaka", "Osaka Castle", "Osaka Castle", 2, "Rebuilt castle keep, moats and park; museum inside."),
+  a("o07", "Osaka", "Shinsekai", "Shinsekai", 1.5, "Retro neighbourhood of kushikatsu bars below Tsutenkaku."),
+  a("o08", "Osaka", "Shitenno-ji", "Shinsekai", 1, "One of Japan's oldest temples, founded 593."),
+  a("o09", "Osaka", "Osaka Aquarium Kaiyukan", "Bay", 2.5, "One of the world's biggest aquariums, with whale sharks."),
+  a("o10", "Osaka", "Tempozan Ferris Wheel", "Bay", 0.5, "Giant wheel next to the aquarium with bay views."),
+  a("o11", "Osaka", "Umeda & Grand Front shopping", "Umeda", 1.5, "Department stores and Pokémon Center Osaka."),
+  a("o12", "Osaka", "Sumiyoshi Taisha", "South", 1, "Ancient shrine with an arched red bridge."),
+  a("o13", "Osaka", "Expo '70 Park & Tower of the Sun", "North", 2.5, "Big park around Taro Okamoto's iconic tower."),
+  a("o14", "Osaka", "Cup Noodles Museum Osaka Ikeda", "North", 1.5, "Design your own cup noodle where instant ramen was born."),
+  // Food — Tokyo
+  f("ft01", "Tokyo", "Sushi Dai", "Toyosu", "Sushi", "¥¥¥ (omakase ~¥5,500)", "Legendary market sushi counter; queues from dawn.", "sushi", "L"),
+  f("ft02", "Tokyo", "Sushizanmai Tsukiji Honten", "Ginza", "Sushi", "¥¥", "Reliable 24-hour sushi chain flagship at Tsukiji.", "sushi"),
+  f("ft03", "Tokyo", "Uogashi Nihon-ichi", "Shibuya", "Sushi", "¥", "Standing sushi bar, fast and cheap.", "sushi"),
+  f("ft04", "Tokyo", "Ichiran Shibuya", "Shibuya", "Ramen", "¥", "Tonkotsu ramen eaten in solo booths; open late.", "ramen"),
+  f("ft05", "Tokyo", "AFURI Harajuku", "Harajuku", "Ramen", "¥", "Light yuzu-shio ramen.", "ramen"),
+  f("ft06", "Tokyo", "Fuunji", "Shinjuku", "Tsukemen", "¥", "Cult tsukemen dipping noodles in rich fish-chicken broth.", "tsukemen"),
+  f("ft07", "Tokyo", "Rokurinsha (Tokyo Ramen Street)", "Marunouchi", "Tsukemen", "¥", "Famous tsukemen inside Tokyo Station.", "tsukemen"),
+  f("ft08", "Tokyo", "Tsukishima Monja Street – Monja Kondo", "Ginza", "Monjayaki", "¥¥", "Cook-it-yourself Tokyo savoury batter on a griddle.", "monja", "D"),
+  f("ft09", "Tokyo", "Tempura Tsunahachi Shinjuku", "Shinjuku", "Tempura", "¥¥", "Since 1923; crisp tempura sets at the counter.", "tempura"),
+  f("ft10", "Tokyo", "Daikokuya Tempura", "Asakusa", "Tendon", "¥", "Asakusa's classic dark-sauce tempura rice bowl.", "tempura", "L"),
+  f("ft11", "Tokyo", "Asakusa Imahan", "Asakusa", "Sukiyaki (wagyu)", "¥¥¥¥", "Wagyu sukiyaki house since 1895; lunch sets cheaper.", "sukiyaki", "D"),
+  f("ft12", "Tokyo", "Gyukatsu Motomura", "Shibuya", "Gyukatsu (beef cutlet)", "¥", "Crumbed rare beef you sear on a mini grill.", "wagyu"),
+  f("ft13", "Tokyo", "Tonkatsu Maisen Aoyama", "Harajuku", "Tonkatsu", "¥¥", "Famous pork cutlet in a former bathhouse.", "tonkatsu"),
+  f("ft14", "Tokyo", "Omoide Yokocho yakitori stalls", "Shinjuku", "Yakitori", "¥", "Smoky chicken skewers and beer in 'Memory Lane'.", "yakitori", "D"),
+  f("ft15", "Tokyo", "Nodaiwa Azabu-Iikura", "Roppongi", "Unagi (eel)", "¥¥¥", "Historic eel house grilling unagi for 5 generations.", "unagi"),
+  f("ft16", "Tokyo", "Kanda Matsuya", "Akihabara", "Soba", "¥", "Old-school hand-made soba since 1884.", "soba", "L"),
+  // Food — day trips
+  f("fd01", "Hakone", "Hatsuhana Soba (Hakone-Yumoto)", "Hakone", "Soba", "¥", "Riverside soba with grated yam; also try black eggs at Owakudani.", "soba", "L"),
+  f("fd02", "Fuji", "Hoto Fudou (Kawaguchiko)", "Kawaguchiko", "Hoto noodles", "¥", "Thick miso-pumpkin noodle stew, Yamanashi's local dish.", "hoto", "L"),
+  f("fd03", "Nara", "Nakatanidou", "Nara", "Yomogi mochi", "¥", "Famous high-speed mochi pounding show; warm mugwort mochi.", "nakatanido", "L"),
+  f("fd04", "Nara", "Hiraso", "Nara", "Kakinoha-zushi", "¥¥", "Persimmon-leaf-wrapped sushi, Nara's speciality.", "sushi", "L"),
+  // Food — Kyoto
+  f("fk01", "Kyoto", "Gion Karyo", "Gion", "Kaiseki", "¥¥¥¥", "Approachable Michelin-starred kaiseki; lunch from ~¥6,000.", "kaiseki"),
+  f("fk02", "Kyoto", "Kikunoi Honten", "Higashiyama", "Kaiseki", "¥¥¥¥¥", "Three-star ryotei, the benchmark of Kyoto kaiseki. Book months ahead.", "kaiseki", "D"),
+  f("fk03", "Kyoto", "Okutan Nanzen-ji", "N. Higashiyama", "Yudofu", "¥¥", "Simmered tofu in a garden setting since 1635.", "tofu", "L"),
+  f("fk04", "Kyoto", "Yudofu Sagano", "Arashiyama", "Yudofu", "¥¥", "Tofu set meals in a garden near the bamboo grove.", "tofu", "L"),
+  f("fk05", "Kyoto", "Nakamura Tokichi (Uji or Kyoto Stn)", "Uji", "Matcha sweets", "¥", "Matcha parfaits from an 1859 tea merchant.", "matcha"),
+  f("fk06", "Kyoto", "Tsujiri Gion", "Gion", "Matcha sweets", "¥", "Matcha soft-serve and parfaits on Shijo-dori.", "matcha"),
+  f("fk07", "Kyoto", "Kagizen Yoshifusa", "Gion", "Wagashi & kuzukiri", "¥", "Classic confectioner famed for black-syrup kuzukiri.", "wagashi", "L"),
+  f("fk08", "Kyoto", "Izuju", "Gion", "Saba-zushi", "¥¥", "Kyoto-style pressed mackerel sushi opposite Yasaka Shrine.", "sushi", "L"),
+  f("fk09", "Kyoto", "Omen Ginkaku-ji", "N. Higashiyama", "Udon", "¥", "Udon dipped with seasonal vegetables near the Silver Pavilion.", "udon", "L"),
+  f("fk10", "Kyoto", "Honke Daiichi-Asahi", "Central", "Ramen", "¥", "Kyoto shoyu ramen by Kyoto Station, open early to late.", "ramen"),
+  f("fk11", "Kyoto", "Pontocho kawayuka dinner", "Central", "Kyoto cuisine", "¥¥¥", "Riverside summer decks over the Kamo River open from May.", "kaiseki", "D"),
+  // Food — Osaka
+  f("fo01", "Osaka", "Wanaka Sennichimae", "Namba", "Takoyaki", "¥", "Crisp-outside, molten-inside octopus balls.", "takoyaki"),
+  f("fo02", "Osaka", "Kukuru Dotonbori", "Namba", "Takoyaki", "¥", "Big chunks of octopus, on the main strip.", "takoyaki"),
+  f("fo03", "Osaka", "Mizuno", "Namba", "Okonomiyaki", "¥", "Michelin-listed okonomiyaki since 1945; queue.", "okonomi"),
+  f("fo04", "Osaka", "Kiji (Umeda Sky Building)", "Umeda", "Okonomiyaki", "¥", "Beloved okonomiyaki in the retro basement food street.", "okonomi", "D"),
+  f("fo05", "Osaka", "Kushikatsu Daruma Shinsekai", "Shinsekai", "Kushikatsu", "¥", "Fried skewers, no double-dipping the sauce.", "kushi"),
+  f("fo06", "Osaka", "Usami-tei Matsubaya", "Namba", "Kitsune udon", "¥", "Where kitsune udon was invented.", "udon", "L"),
+  f("fo07", "Osaka", "Yakiniku M Hozenji", "Namba", "Wagyu yakiniku", "¥¥¥", "Matsusaka wagyu grilled at the table.", "wagyu", "D"),
+  f("fo08", "Osaka", "Kani Doraku Dotonbori", "Namba", "Crab", "¥¥¥", "Under the giant moving crab; crab course meals.", "dotonbori", "D"),
+  f("fo09", "Osaka", "551 Horai (Namba)", "Namba", "Butaman", "¥", "Osaka's favourite pork buns; great snack.", undefined, "L"),
+  // Viewpoints — Tokyo
+  v("vt01", "Tokyo", "Tokyo Skytree", "Asakusa", "Tallest tower in Japan; decks at 350 m and 450 m.", "Sunset into night", "~¥2,100–3,500 (dynamic by day; both decks more)", "Timed tickets online; buy ahead for sunset.", "skytree"),
+  v("vt02", "Tokyo", "Tokyo Tower", "Roppongi", "Retro orange tower; main deck 150 m, top deck 250 m.", "Night", "~¥1,200 main deck; top deck tour ~¥3,000+", "Main deck walk-up; top deck reserve online.", "tower"),
+  v("vt03", "Tokyo", "Shibuya Sky", "Shibuya", "Open-air rooftop 229 m above Shibuya Crossing.", "Sunset", "~¥2,500–3,400", "Sunset slots sell out; tickets release ~4 weeks ahead.", "shibuya"),
+  v("vt04", "Tokyo", "Tokyo City View (Roppongi Hills)", "Roppongi", "Shibuya Sky alternative with Tokyo Tower framed; Sky Deck rooftop extra.", "Night", "~¥2,000–2,400; Sky Deck extra", "Usually easy walk-up.", "cityview"),
+  v("vt05", "Tokyo", "Tokyo Metropolitan Govt Building", "Shinjuku", "Free 202 m deck; Fuji on clear days; facade projection show after dark.", "Sunset / night", "Free", "No booking; check closure days.", "tmg"),
+  v("vt06", "Tokyo", "Sunshine 60 Observatory", "Ikebukuro", "Indoor park-style deck 251 m up, quieter than the big three.", "Night", "~¥1,200–2,400", "Walk-up.", "sunshine"),
+  // Viewpoints — Kyoto
+  v("vk01", "Kyoto", "Kyoto Tower", "Central", "Only tall view over the low city; next to Kyoto Station.", "Night", "~¥900", "Walk-up.", "kyototower"),
+  v("vk02", "Kyoto", "Kiyomizu-dera stage", "Higashiyama", "The famous wooden stage over a green valley.", "Late afternoon (closes ~18:00)", "¥500 temple entry", "No booking; night openings are seasonal.", "kiyomizu"),
+  v("vk03", "Kyoto", "Fushimi Inari Yotsutsuji viewpoint", "Fushimi", "City panorama ~45 min up the torii trail.", "Sunset (open 24 h)", "Free", "No booking; bring a light for the walk down.", "yotsutsuji"),
+  v("vk04", "Kyoto", "Shogunzuka Seiryuden", "N. Higashiyama", "Hilltop temple with a glass-floored stage bigger than Kiyomizu's.", "Late afternoon", "~¥500", "Taxi up; closes ~17:00 except special nights.", "shogunzuka"),
+  // Viewpoints — Osaka
+  v("vo01", "Osaka", "Abeno Harukas 300", "Shinsekai", "300 m glass deck, the highest view in Osaka.", "Sunset into night", "~¥2,000", "Walk-up or online ticket.", "harukas"),
+  v("vo02", "Osaka", "Umeda Sky Building Floating Garden", "Umeda", "Open-air ring deck joining two towers, 173 m.", "Night", "~¥2,000", "Walk-up; busy at sunset.", "umeda"),
+  v("vo03", "Osaka", "Tsutenkaku", "Shinsekai", "Retro tower over Shinsekai with a slide and outdoor deck.", "Evening", "~¥1,200; extras cost more", "Walk-up.", "tsutenkaku"),
+  v("vo04", "Osaka", "HEP Five Ferris Wheel", "Umeda", "Red rooftop wheel on a Umeda mall.", "Night", "~¥800", "Walk-up.", "hep"),
+];
+
+// ---- config ----
+var params = new URLSearchParams(location.search);
+var DEFAULT_BLOB = ""; // set after the shared board is created
+var API = params.get("api") || "https://jsonblob.com/api/jsonBlob";
+var BLOB = params.get("b") || DEFAULT_BLOB;
+var STORE = "jp27-site-v1";
+var BYID = {}, RANK = {};
+ITEMS.forEach(function (it, i) { BYID[it.id] = it; RANK[it.id] = i; });
+var TOKYO_TRIPS = ["d01", "d02", "d03", "d04"], KO_TRIPS = ["d05", "d06"];
+var DATES = ["Thu 20 May", "Fri 21 May", "Sat 22 May", "Sun 23 May", "Mon 24 May", "Tue 25 May", "Wed 26 May", "Thu 27 May", "Fri 28 May", "Sat 29 May", "Sun 30 May", "Mon 31 May"];
+
+// ---- state ----
+var S = (function () { try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch (e) { return {}; } })();
+S.name = S.name || ""; S.picks = S.picks || []; S.imported = S.imported || {}; S.min = S.min || 1;
+var shared = {}; var sharedOk = null; var lastSync = null;
+var tabs = { a: "Tokyo", f: "Tokyo", v: "Tokyo" };
+function save() { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch (e) {} }
+function $(id) { return document.getElementById(id); }
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+function me() { return S.name.trim() || "Me"; }
+
+function tally() {
+  var out = {};
+  function add(who, ids) { (ids || []).forEach(function (id) { if (!BYID[id]) return; (out[id] = out[id] || []); if (out[id].indexOf(who) < 0) out[id].push(who); }); }
+  Object.keys(shared).forEach(function (w) { if (w !== me()) add(w, shared[w].picks); });
+  Object.keys(S.imported).forEach(function (w) { if (w !== me() && !shared[w]) add(w, S.imported[w]); });
+  add(me(), S.picks);
+  return out;
+}
+function voterList() {
+  var names = {}; Object.keys(shared).forEach(function (w) { names[w] = "shared"; });
+  Object.keys(S.imported).forEach(function (w) { if (!names[w]) names[w] = "code"; });
+  names[me()] = names[me()] ? names[me()] + ", this device" : "this device (not submitted)";
+  return names;
+}
+
+// ---- shared store (jsonblob) ----
+function getBlob() {
+  return fetch(API + "/" + BLOB, { headers: { Accept: "application/json" }, cache: "no-store" }).then(function (r) {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    var etag = r.headers.get("ETag");
+    return r.json().then(function (j) { return { data: j, etag: etag }; });
+  });
+}
+function refreshShared() {
+  if (!BLOB) { sharedOk = null; renderStatus(); return Promise.resolve(); }
+  return getBlob().then(function (res) {
+    shared = (res.data && res.data.voters) || {}; sharedOk = true; lastSync = new Date(); renderAll();
+  }).catch(function (e) { sharedOk = false; renderStatus(); });
+}
+function submitVotes() {
+  if (!S.name.trim()) { msg("Enter your name first."); $("name").focus(); return; }
+  if (!BLOB) { msg("No shared board yet. Ask Simon for the voting link, or use Copy my votes."); return; }
+  msg("Submitting…");
+  var tries = 0;
+  function attempt() {
+    tries++;
+    return getBlob().then(function (res) {
+      var data = res.data && typeof res.data === "object" ? res.data : {};
+      data.app = "jp27"; data.voters = data.voters || {};
+      data.voters[S.name.trim()] = { picks: S.picks.slice().sort(), at: new Date().toISOString() };
+      var h = { "Content-Type": "application/json", Accept: "application/json" };
+      if (res.etag) h["If-Match"] = res.etag;
+      return fetch(API + "/" + BLOB, { method: "PUT", headers: h, body: JSON.stringify(data) }).then(function (r) {
+        if (r.status === 412 && tries < 4) return attempt();
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        shared = data.voters; sharedOk = true; lastSync = new Date();
+        msg("Submitted " + S.picks.length + " picks as " + S.name.trim() + ". Resubmit any time to replace them.");
+        renderAll();
+      });
+    });
+  }
+  attempt().catch(function (e) { sharedOk = false; renderStatus(); msg("Could not reach the shared board (" + e.message + "). Use Copy my votes and send the code to Simon instead."); });
+}
+function createBoard() {
+  msg("Creating shared board…");
+  fetch(API, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify({ app: "jp27", voters: {} }) }).then(function (r) {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    var loc = r.headers.get("Location") || "", id = r.headers.get("X-jsonblob-id") || loc.split("/").pop();
+    if (!id) throw new Error("no id");
+    BLOB = id; params.set("b", id); history.replaceState(null, "", location.pathname + "?" + params.toString());
+    msg("Shared board created. Share this exact address with everyone: " + location.href);
+    refreshShared();
+  }).catch(function (e) { msg("Could not create a board (" + e.message + "). Use vote codes instead."); });
+}
+function removeMine() {
+  if (!BLOB || !S.name.trim()) return;
+  getBlob().then(function (res) {
+    var data = res.data || {}; data.voters = data.voters || {}; delete data.voters[S.name.trim()];
+    var h = { "Content-Type": "application/json" }; if (res.etag) h["If-Match"] = res.etag;
+    return fetch(API + "/" + BLOB, { method: "PUT", headers: h, body: JSON.stringify(data) }).then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); msg("Removed your votes from the shared board."); return refreshShared(); });
+  }).catch(function (e) { msg("Could not update the board (" + e.message + ")."); });
+}
+
+// ---- codes fallback ----
+function encodeVotes() { return "JP27." + encodeURIComponent(S.name.trim() || "Guest").replace(/\./g, "%2E") + "." + S.picks.slice().sort().join("-"); }
+function decodeVotes(text) {
+  var out = [], re = /JP27\.([^.\s]+)\.([a-z0-9-]*)/g, m;
+  while ((m = re.exec(text))) { var n = m[1]; try { n = decodeURIComponent(n); } catch (e) {} out.push({ name: n, picks: m[2].split("-").filter(function (id) { return !!BYID[id]; }) }); }
+  return out;
+}
+function copyCode() {
+  var code = encodeVotes(); $("code").value = code;
+  function fallback() { $("code").select(); try { document.execCommand("copy"); msg("Copied. Send it to Simon."); } catch (e) { msg("Select the code and copy it by hand."); } }
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code).then(function () { msg("Copied. Send it to Simon."); }, fallback); else fallback();
+}
+function importCodes() {
+  var got = decodeVotes($("import").value);
+  if (!got.length) { msg("No vote codes found. Codes start with JP27."); return; }
+  got.forEach(function (g) { S.imported[g.name] = g.picks; }); save(); $("import").value = "";
+  msg("Imported " + got.map(function (g) { return g.name; }).join(", ") + " (on this device).");
+  renderAll();
+}
+function msg(t) { $("msg").textContent = t; }
+
+// ---- generator ----
+function skeleton() {
+  function d(n, title, base, cap, meals, eve) { return { n: n, date: DATES[n - 1], title: title, base: base, cap: cap, used: 0, acts: [], meals: meals.map(function (m) { return { meal: m, city: base }; }), eve: eve }; }
+  return [
+    d(1, "Fly KUL → Tokyo, check in", "Tokyo", 3, ["D"], true),
+    d(2, "Tokyo", "Tokyo", 8, ["L", "D"], true), d(3, "Tokyo", "Tokyo", 8, ["L", "D"], true), d(4, "Tokyo", "Tokyo", 8, ["L", "D"], true),
+    d(5, "Tokyo (Disney day option)", "Tokyo", 8, ["L", "D"], true),
+    d(6, "Day-trip slot: Hakone / Fuji / Nikko / Kamakura, or extra Tokyo day", "Tokyo", 8, ["L", "D"], true),
+    d(7, "Shinkansen Tokyo → Kyoto (~2h15), Kyoto afternoon", "Kyoto", 4, ["L", "D"], true),
+    d(8, "Kyoto", "Kyoto", 8, ["L", "D"], true), d(9, "Kyoto", "Kyoto", 8, ["L", "D"], true),
+    d(10, "Kyoto → Osaka (stop at Nara or Himeji if picked)", "Osaka", 6, ["L", "D"], true),
+    d(11, "Universal Studios Japan (locked)", "Osaka", 0, [], false),
+    d(12, "Osaka morning, fly home from KIX", "Osaka", 3, ["L"], false)
+  ];
+}
+function build(picked, votes) {
+  var days = skeleton(), warnings = [];
+  days[10].locked = true;
+  function score(id) { return (votes[id] || []).length; }
+  var sel = picked.map(function (id) { return BYID[id]; }).filter(Boolean).sort(function (x, y) { return score(y.id) - score(x.id) || RANK[x.id] - RANK[y.id]; });
+  var tt = sel.filter(function (x) { return TOKYO_TRIPS.indexOf(x.id) >= 0; });
+  if (tt.length) { var t = tt[0]; days[5].trip = t; days[5].cap = 0; days[5].title = "Day trip: " + t.name; days[5].meals = [{ meal: "L", city: t.city }, { meal: "D", city: "Tokyo" }];
+    tt.slice(1).forEach(function (x) { warnings.push(x.name + " did not fit: only one Tokyo day-trip slot (Day 6). Swap it with a Tokyo day if you prefer."); }); }
+  var kt = sel.filter(function (x) { return KO_TRIPS.indexOf(x.id) >= 0; });
+  if (kt.length) { var k = kt[0]; days[9].trip = k; days[9].cap = 2; days[9].title = "Kyoto → " + k.city + " → Osaka: " + k.name; days[9].meals = [{ meal: "L", city: k.city }, { meal: "D", city: "Osaka" }];
+    kt.slice(1).forEach(function (x) { warnings.push(x.name + " did not fit: only one stop on the Kyoto → Osaka day (Day 10)."); }); }
+  var pref = [4, 1, 3, 2, 5];
+  sel.filter(function (x) { return x.kind === "a" && !x.trip && x.hours >= 8; }).forEach(function (x) {
+    var di = pref.find(function (i) { return days[i].base === "Tokyo" && !days[i].trip && !days[i].full && days[i].acts.length === 0; });
+    if (di === undefined) { warnings.push(x.name + " did not fit: no free full Tokyo day left."); return; }
+    var d = days[di]; d.full = x; d.cap = 0; d.title = x.name + " (full day)"; d.meals = []; d.eve = false;
+  });
+  sel.filter(function (x) { return x.kind === "a" && !x.trip && x.hours < 8; }).forEach(function (x) {
+    var cand = days.filter(function (d) { return d.base === x.city && !d.full && !d.locked && d.cap - d.used >= x.hours && d.acts.length < 4; });
+    if (!cand.length) { warnings.push(x.name + " (" + x.city + ") did not fit: " + x.city + " days are full. Drop something or raise min votes."); return; }
+    var same = cand.filter(function (d) { return d.acts.some(function (y) { return y.area === x.area; }); });
+    var pick = same.length ? same[0] : cand.slice().sort(function (p, q) { return ((p.cap >= 8 ? 0 : 1) - (q.cap >= 8 ? 0 : 1)) || p.used / Math.max(p.cap, 1) - q.used / Math.max(q.cap, 1) || p.n - q.n; })[0];
+    pick.acts.push(x); pick.used += x.hours;
+  });
+  days.forEach(function (d) { d.acts.sort(function (p, q) { return p.area.localeCompare(q.area); }); });
+  function areas(d) { return d.acts.map(function (y) { return y.area; }).concat(d.trip ? [d.trip.area] : []); }
+  sel.filter(function (x) { return x.kind === "f"; }).forEach(function (x) {
+    var all = []; days.forEach(function (d) { d.meals.forEach(function (s) { if (!s.item && s.city === x.city) all.push({ d: d, s: s }); }); });
+    if (!all.length) { warnings.push(x.name + " (" + x.city + ") not placed: " + (["Hakone", "Fuji", "Nara", "Nikko", "Kamakura", "Himeji"].indexOf(x.city) >= 0 ? "pick that day trip too, or " : "") + "no free meal slot in " + x.city + "."); return; }
+    function ok(s) { return x.meal === "any" || x.meal === s.meal; }
+    var best = all.find(function (c) { return ok(c.s) && areas(c.d).indexOf(x.area) >= 0; }) || all.find(function (c) { return ok(c.s); }) || all[0];
+    best.s.item = x;
+  });
+  sel.filter(function (x) { return x.kind === "v"; }).forEach(function (x) {
+    var cand = days.filter(function (d) { return d.eve && !d.eveItem && (d.base === x.city); });
+    if (!cand.length) { warnings.push(x.name + " not placed: no free evening in " + x.city + "."); return; }
+    (cand.find(function (d) { return areas(d).indexOf(x.area) >= 0; }) || cand[0]).eveItem = x;
+  });
+  var light = days.filter(function (d) { return !d.full && !d.trip && !d.locked && d.cap >= 8 && d.used < 3; });
+  if (light.length) warnings.push("Light days (under 3h planned): " + light.map(function (d) { return "Day " + d.n + " " + d.base; }).join(", ") + ". Pick more items for those cities or keep them free.");
+  return { days: days, warnings: warnings };
+}
+function generate() {
+  var votes = tally();
+  var ids = Object.keys(votes).filter(function (id) { return votes[id].length >= S.min; });
+  var p = build(ids, votes);
+  function vl(id) { var n = (votes[id] || []).length; return n + (n === 1 ? " vote" : " votes"); }
+  function row(lead, title, detail, meta) { return '<div class="row"><div class="lead">' + esc(lead) + '</div><div><div class="rt">' + esc(title) + '</div>' + (detail ? '<div class="rd">' + esc(detail) + "</div>" : "") + "</div>" + (meta ? '<div class="rm">' + esc(meta) + "</div>" : "") + "</div>"; }
+  var h = "";
+  if (!ids.length) h += '<div class="note">Nothing has ' + S.min + '+ votes yet. Pick items or lower min votes.</div>';
+  if (p.warnings.length) h += '<div class="warn"><b>' + p.warnings.length + ' notes</b><ul>' + p.warnings.map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("") + "</ul></div>";
+  p.days.forEach(function (d) {
+    var r = "";
+    if (d.locked) r += row("All day", "Universal Studios Japan", "Park ticket ¥8,600–11,000 pp. Add Express Pass or a VIP tour (see USJ section).");
+    if (d.full) r += row("All day", d.full.name, d.full.desc, vl(d.full.id));
+    if (d.trip) r += row(d.n === 10 ? "Morning" : "All day", d.trip.name, d.trip.desc, vl(d.trip.id));
+    d.acts.forEach(function (x) { r += row(x.hours + "h", x.name, x.area + " · " + x.desc, vl(x.id)); });
+    d.meals.forEach(function (s) { if (s.item) r += row(s.meal === "L" ? "Lunch" : "Dinner", s.item.name, s.item.dish + " · " + s.item.area + " · " + s.item.price, vl(s.item.id)); });
+    if (d.eveItem) r += row("Evening", d.eveItem.name, d.eveItem.best + " · " + d.eveItem.price, vl(d.eveItem.id));
+    if (!d.locked && !d.full && !d.trip && !d.acts.length) r += row("Free", d.n === 1 ? "Arrive, check in, nearby dinner" : d.n === 12 ? "Pack, last shopping, train to KIX" : "Open time — nothing picked for " + d.base + " yet");
+    h += '<div class="day"><h3>Day ' + d.n + " · " + d.date + " · " + esc(d.title) + "</h3>" + r + "</div>";
+  });
+  $("plan").innerHTML = h;
+  $("plan").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// ---- render ----
+function mapUrl(it) { return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(it.name.replace(/\(.*?\)/g, "") + " " + (it.trip ? "" : it.city) + " Japan"); }
+function inTab(it, kind) {
+  var t = tabs[kind];
+  if (kind === "a") return t === "Day trips" ? it.trip : (it.city === t && !it.trip);
+  if (kind === "f") return t === "Day trips" ? ["Hakone", "Fuji", "Nara"].indexOf(it.city) >= 0 : it.city === t;
+  return it.city === t;
+}
+function renderGrid(kind) {
+  var votes = tally();
+  var html = ITEMS.filter(function (it) { return it.kind === kind && inTab(it, kind); }).map(function (it) {
+    var on = S.picks.indexOf(it.id) >= 0, vs = votes[it.id] || [];
+    var meta = kind === "a" ? it.area + " · " + it.hours + "h" : kind === "f" ? it.dish + " · " + it.area + " · " + it.price : it.area + " · " + it.best;
+    return '<div class="card' + (on ? " on" : "") + '" data-id="' + it.id + '" role="button" tabindex="0" aria-pressed="' + on + '">' +
+      (it.img && IMG[it.img] ? '<img loading="lazy" alt="' + esc(it.name) + '" src="' + W + IMG[it.img] + '">' : "") +
+      '<div class="cb"><div class="ch"><span class="cn">' + esc(it.name) + '</span><span class="ok">' + (on ? "OK ✓" : "Tap to pick") + "</span></div>" +
+      '<div class="cm">' + esc(meta) + '</div><div class="cd">' + esc(it.desc) + "</div>" +
+      (kind === "v" ? '<div class="cm">' + esc(it.price + " · " + it.book) + "</div>" : "") +
+      '<div class="cf"><span class="cv">' + (vs.length ? vs.length + (vs.length === 1 ? " vote: " : " votes: ") + esc(vs.join(", ")) : "No votes yet") + '</span><a class="map" target="_blank" rel="noopener" href="' + mapUrl(it) + '">Map</a></div></div></div>';
+  }).join("");
+  $("grid-" + kind).innerHTML = html;
+}
+function renderTabs(kind, opts) {
+  $("tabs-" + kind).innerHTML = opts.map(function (o) { return '<button class="tab' + (tabs[kind] === o ? " sel" : "") + '" data-kind="' + kind + '" data-tab="' + o + '">' + o + "</button>"; }).join("");
+}
+function renderStatus() {
+  var el = $("status");
+  if (!BLOB) el.innerHTML = 'No shared voting board in this link. Friends: open the voting link Simon sent you (it ends with <b>?b=</b>…). <br><span class="muted">Simon only, once:</span> <button id="mk" class="btn">Create shared board</button>';
+  else if (sharedOk === false) el.innerHTML = '<span class="bad">Shared board unreachable.</span> Use Copy my votes as a fallback. <button id="rf" class="btn">Retry</button>';
+  else el.innerHTML = '<span class="good">Shared board connected</span> · ' + Object.keys(shared).length + " voters" + (lastSync ? " · updated " + lastSync.toLocaleTimeString() : "") + ' <button id="rf" class="btn">Refresh</button>';
+  var vl = voterList();
+  $("voters").textContent = "Voters: " + Object.keys(vl).map(function (w) { return w + " (" + vl[w] + ")"; }).join(", ");
+  $("pickcount").textContent = S.picks.length + " picks";
+}
+function renderAll() { renderGrid("a"); renderGrid("f"); renderGrid("v"); renderStatus(); $("code").value = encodeVotes(); }
+
+document.addEventListener("click", function (e) {
+  var t = e.target;
+  if (t.closest && t.closest("a.map")) return;
+  var tab = t.closest && t.closest(".tab");
+  if (tab) { tabs[tab.dataset.kind] = tab.dataset.tab; renderTabs("a", ["Tokyo", "Kyoto", "Osaka", "Day trips"]); renderTabs("f", ["Tokyo", "Kyoto", "Osaka", "Day trips"]); renderTabs("v", ["Tokyo", "Kyoto", "Osaka"]); renderGrid(tab.dataset.kind); return; }
+  var card = t.closest && t.closest(".card");
+  if (card) { var id = card.dataset.id, i = S.picks.indexOf(id); if (i >= 0) S.picks.splice(i, 1); else S.picks.push(id); save(); renderAll(); return; }
+  if (t.id === "mk") createBoard();
+  if (t.id === "rf") refreshShared();
+});
+document.addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === " ") && e.target.classList && e.target.classList.contains("card")) { e.preventDefault(); e.target.click(); } });
+
+window.addEventListener("DOMContentLoaded", function () {
+  $("name").value = S.name;
+  $("name").addEventListener("input", function () { S.name = this.value; save(); renderAll(); });
+  $("submit").onclick = submitVotes; $("copy").onclick = copyCode; $("doimport").onclick = importCodes;
+  $("clear").onclick = function () { S.picks = []; save(); renderAll(); };
+  $("rmimp").onclick = function () { S.imported = {}; save(); renderAll(); };
+  $("rmmine").onclick = removeMine;
+  $("gen").onclick = generate;
+  var mins = [1, 2, 3, 4];
+  $("mins").innerHTML = mins.map(function (m) { return '<button class="tab' + (S.min === m ? " sel" : "") + '" data-min="' + m + '">' + m + "</button>"; }).join("");
+  $("mins").onclick = function (e) { var b = e.target.closest("[data-min]"); if (!b) return; S.min = +b.dataset.min; save(); Array.prototype.forEach.call(this.children, function (c) { c.classList.toggle("sel", +c.dataset.min === S.min); }); };
+  renderTabs("a", ["Tokyo", "Kyoto", "Osaka", "Day trips"]); renderTabs("f", ["Tokyo", "Kyoto", "Osaka", "Day trips"]); renderTabs("v", ["Tokyo", "Kyoto", "Osaka"]);
+  renderAll(); refreshShared();
+  setInterval(function () { if (BLOB && !document.hidden) refreshShared(); }, 30000);
+});
+
+</script>
+</body>
+</html>
